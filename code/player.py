@@ -16,10 +16,11 @@ class Player(pygame.sprite.Sprite):
 
         # Collision rectangle (does NOT rotate)
         self.collision_rect = self.image.get_rect(center=pos)
+        # Used to check from which direction the player came from before collision
+        self.old_rect = self.collision_rect.copy()
 
         # The actual sprite rect (for rendering)
         self.rect = self.collision_rect.copy()
-        self.old_rect = self.collision_rect.copy()
 
         self.display_surface = pygame.display.get_surface()
         self.half_w = self.display_surface.get_size()[0] // 2
@@ -51,15 +52,6 @@ class Player(pygame.sprite.Sprite):
 
         self.collision_rect.y += self.direction.y * self.speed * dt
         self.collison('vertical')
-
-        # Sync the sprite's position with the collision box
-        self.rect.center = self.collision_rect.center
-
-    # def move(self, dt):
-    #     self.rect.x += self.direction.x * self.speed * dt
-    #     self.collison('horizontal')
-    #     self.rect.y += self.direction.y * self.speed * dt
-    #     self.collison('vertical')
 
     def face_direction(self):
         # Get mouse position in screen coordinates
