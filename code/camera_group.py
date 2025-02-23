@@ -10,6 +10,8 @@ class CameraGroup(pygame.sprite.Group):
         self.offset = vector()
         self.half_w = self.display_surface.get_size()[0] // 2
         self.half_h = self.display_surface.get_size()[1] // 2
+        
+        self.line_start = vector(300, 300)
 
     def center_target_camera(self, target):
         self.offset.x = target.rect.centerx - self.half_w
@@ -18,7 +20,7 @@ class CameraGroup(pygame.sprite.Group):
     def custom_draw(self, player):
 
         self.center_target_camera(player)
-
         for sprite in self.sprites():
             offset_pos = sprite.rect.topleft - self.offset  # Apply camera offset
             self.display_surface.blit(sprite.image, offset_pos)
+        pygame.draw.line(self.display_surface, (124,252,0), self.line_start - self.offset, player.rect.center - self.offset, 3)

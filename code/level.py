@@ -53,7 +53,7 @@ class Level:
                     pos=(obj.x + obj.width / 2, obj.y + obj.height / 2),
                     groups=self.camera_group,
                     collision_sprites=self.colllision_sprites,
-                    player=self.player
+                    player=self.player,
                 )
                 print("ENEMY POS: ", obj.x, obj.y)
 

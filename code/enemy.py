@@ -1,5 +1,6 @@
 from settings import *
 from os.path import join
+import heapq
 
 
 class Enemy(pygame.sprite.Sprite):
@@ -31,6 +32,8 @@ class Enemy(pygame.sprite.Sprite):
 
         # Objects that the player should collide with
         self.collision_sprites = collision_sprites
+        
+        self.target = player.rect.center
 
     def move(self, dt):
         self.collision_rect.x += self.direction.x * self.speed * dt
@@ -74,9 +77,6 @@ class Enemy(pygame.sprite.Sprite):
                         and self.old_rect.bottom <= sprite.old_rect.top
                     ):
                         self.collision_rect.bottom = sprite.rect.top
-
-    def find_path(self):
-        print("Finding path")
 
     def update(self, dt):
         self.old_rect = self.collision_rect.copy()
