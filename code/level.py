@@ -19,6 +19,7 @@ class Level:
         self.setup(tmx_map)
 
     def setup(self, tmx_map):
+        self.path_find = PathFind(tmx_map=tmx_map)
         for x, y, surf in tmx_map.get_layer_by_name("Floor").tiles():
             Sprite(
                 pos=(x * TILE_SIZE, y * TILE_SIZE), surf=surf, groups=self.camera_group
@@ -28,14 +29,6 @@ class Level:
                 pos=(x * TILE_SIZE, y * TILE_SIZE),
                 surf=surf,
                 groups=(self.camera_group, self.colllision_sprites),
-            )
-        for x, y, surf in tmx_map.get_layer_by_name("Yellow").tiles():
-            Sprite(
-                pos=(x * TILE_SIZE, y * TILE_SIZE), surf=surf, groups=self.camera_group
-            )
-        for x, y, surf in tmx_map.get_layer_by_name("Blue_Glow").tiles():
-            Sprite(
-                pos=(x * TILE_SIZE, y * TILE_SIZE), surf=surf, groups=self.camera_group
             )
         for obj in tmx_map.get_layer_by_name("Objects"):
             if obj.name == "player":
@@ -60,4 +53,5 @@ class Level:
     def run(self, dt):
         self.camera_group.update(dt)
         self.display_surface.fill("black")
-        self.camera_group.custom_draw(self.player)
+        # self.camera_group.custom_draw(self.player)
+        self.camera_group.custom_draw(self.player, self.path_find)
