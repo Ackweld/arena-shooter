@@ -2,6 +2,7 @@ from settings import *
 from sprites import Sprite
 from player import Player
 from enemy import Enemy
+from path_find import PathFind
 from camera_group import CameraGroup
 
 
@@ -18,7 +19,6 @@ class Level:
         self.setup(tmx_map)
 
     def setup(self, tmx_map):
-
         for x, y, surf in tmx_map.get_layer_by_name("Floor").tiles():
             Sprite(
                 pos=(x * TILE_SIZE, y * TILE_SIZE), surf=surf, groups=self.camera_group
