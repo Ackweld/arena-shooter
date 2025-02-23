@@ -5,7 +5,7 @@ from os.path import join
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, groups, collision_sprites):
         super().__init__(groups)
-        # Load original image
+        
         self.original_image = pygame.image.load(
             join("..", "graphics", "player", "player.png")
         ).convert_alpha()
@@ -13,7 +13,7 @@ class Player(pygame.sprite.Sprite):
         self.image = self.original_image.copy()
 
         # Collision rectangle (does NOT rotate)
-        self.collision_rect = self.image.get_rect(center=pos)
+        self.collision_rect = self.image.get_frect(center=pos)
         # Used to check from which direction the player came from before collision
         self.old_rect = self.collision_rect.copy()
 
@@ -46,30 +46,29 @@ class Player(pygame.sprite.Sprite):
 
     def move(self, dt):
         self.collision_rect.x += self.direction.x * self.speed * dt
-        self.collison("horizontal")
+        # print(f"PLAYER: self.rect.x: {self.rect.x}, self.collision_rect.x: {self.collision_rect.x}")
+        self.collison_check("horizontal")
 
         self.collision_rect.y += self.direction.y * self.speed * dt
-        self.collison("vertical")
+        # print(f"PLAYER self.rect.y: {self.rect.y}, self.collision_rect.y: {self.collision_rect.y}")
+        self.collison_check("vertical")
+        
 
     def face_mouse_cursor(self):
 
         mouse_pos = vector(pygame.mouse.get_pos())
         screen_center = vector(self.half_w, self.half_h)
 
-        # Calculate direction from screen center to mouse
         direction = mouse_pos - screen_center
-
-        # Calculate the angle relative to the rightward direction
         angle = direction.angle_to(vector(1, 0))
 
-        # Rotate the image while keeping the collision rect unchanged
         rotated_image = pygame.transform.rotate(self.original_image, angle - 90)
 
         # Preserve the player's center position
         self.image = rotated_image
         self.rect = self.image.get_rect(center=self.collision_rect.center)
 
-    def collison(self, axis):
+    def collison_check(self, axis):
         for sprite in self.collision_sprites:
             if sprite.rect.colliderect(self.collision_rect):
                 if axis == "horizontal":
