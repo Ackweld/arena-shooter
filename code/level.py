@@ -1,6 +1,7 @@
 from settings import *
 from sprites import Sprite
 from player import Player
+from enemy import Enemy
 from camera_group import CameraGroup
 
 
@@ -18,26 +19,46 @@ class Level:
 
     def setup(self, tmx_map):
 
-        for x, y, surf in tmx_map.get_layer_by_name('Floor').tiles():
-            Sprite((x * TILE_SIZE, y * TILE_SIZE), surf,
-                   self.camera_group)
-        for x, y, surf in tmx_map.get_layer_by_name('Walls').tiles():
-            Sprite((x * TILE_SIZE, y * TILE_SIZE), surf,
-                   (self.camera_group, self.colllision_sprites))
-        for x, y, surf in tmx_map.get_layer_by_name('Yellow').tiles():
-            Sprite((x * TILE_SIZE, y * TILE_SIZE), surf,
-                   self.camera_group)
-        for x, y, surf in tmx_map.get_layer_by_name('Blue_Glow').tiles():
-            Sprite((x * TILE_SIZE, y * TILE_SIZE), surf,
-                   self.camera_group)
-        for obj in tmx_map.get_layer_by_name('Objects'):
-            if obj.name == 'player':
-                # Player size is 128 px. Get rect center by taking top left + player size / 4
-                self.player = Player((obj.x + obj.width / 4, obj.y + obj.height / 4), self.camera_group,
-                                     self.colllision_sprites)
-                print('PLAYER POS: ', obj.x, obj.y)
+        for x, y, surf in tmx_map.get_layer_by_name("Floor").tiles():
+            Sprite(
+                pos=(x * TILE_SIZE, y * TILE_SIZE), surf=surf, groups=self.camera_group
+            )
+        for x, y, surf in tmx_map.get_layer_by_name("Walls").tiles():
+            Sprite(
+                pos=(x * TILE_SIZE, y * TILE_SIZE),
+                surf=surf,
+                groups=(self.camera_group, self.colllision_sprites),
+            )
+        for x, y, surf in tmx_map.get_layer_by_name("Yellow").tiles():
+            Sprite(
+                pos=(x * TILE_SIZE, y * TILE_SIZE), surf=surf, groups=self.camera_group
+            )
+        for x, y, surf in tmx_map.get_layer_by_name("Blue_Glow").tiles():
+            Sprite(
+                pos=(x * TILE_SIZE, y * TILE_SIZE), surf=surf, groups=self.camera_group
+            )
+        for obj in tmx_map.get_layer_by_name("Objects"):
+            if obj.name == "player":
+                # Player size is 128 px. Get rect center by taking top left + player size / 2
+                self.player = Player(
+                    pos=(obj.x + obj.width / 2, obj.y + obj.height / 2),
+                    groups=self.camera_group,
+                    collision_sprites=self.colllision_sprites,
+                )
+                print("PLAYER POS: ", obj.x, obj.y)
+                print("PLAYER IMAGE: ", obj.image)
+        for obj in tmx_map.get_layer_by_name("Enemies"):
+            if obj.name == "enemy":
+                # Enemy size is 128 px. Get rect center by taking top left + player size / 2
+                self.player = Enemy(
+                    pos=(obj.x + obj.width / 2, obj.y + obj.height / 2),
+                    groups=self.camera_group,
+                    collision_sprites=self.colllision_sprites,
+                )
+                print("PLAYER POS: ", obj.x, obj.y)
+                print("PLAYER IMAGE: ", obj.image)
 
     def run(self, dt):
         self.camera_group.update(dt)
-        self.display_surface.fill('black')
+        self.display_surface.fill("black")
         self.camera_group.custom_draw(self.player)
