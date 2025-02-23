@@ -37,20 +37,20 @@ class Level:
             Sprite(
                 pos=(x * TILE_SIZE, y * TILE_SIZE), surf=surf, groups=self.camera_group
             )
-        for obj in tmx_map.get_layer_by_name("Objects"):
-            if obj.name == "player":
-                # Player size is 128 px. Get rect center by taking top left + player size / 2
-                self.player = Player(
+        for obj in tmx_map.get_layer_by_name("Enemies"):
+            if obj.name == "enemy":
+                # Enemy size is 128 px. Get rect center by taking top left + player size / 2
+                self.player = Enemy(
                     pos=(obj.x + obj.width / 2, obj.y + obj.height / 2),
                     groups=self.camera_group,
                     collision_sprites=self.colllision_sprites,
                 )
                 print("PLAYER POS: ", obj.x, obj.y)
                 print("PLAYER IMAGE: ", obj.image)
-        for obj in tmx_map.get_layer_by_name("Enemies"):
-            if obj.name == "enemy":
-                # Enemy size is 128 px. Get rect center by taking top left + player size / 2
-                self.player = Enemy(
+        for obj in tmx_map.get_layer_by_name("Objects"):
+            if obj.name == "player":
+                # Player size is 128 px. Get rect center by taking top left + player size / 2
+                self.player = Player(
                     pos=(obj.x + obj.width / 2, obj.y + obj.height / 2),
                     groups=self.camera_group,
                     collision_sprites=self.colllision_sprites,
