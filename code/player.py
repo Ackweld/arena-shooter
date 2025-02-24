@@ -46,11 +46,9 @@ class Player(pygame.sprite.Sprite):
 
     def move(self, dt):
         self.collision_rect.x += self.direction.x * self.speed * dt
-        # print(f"PLAYER: self.rect.x: {self.rect.x}, self.collision_rect.x: {self.collision_rect.x}")
         self.collison_check("horizontal")
 
         self.collision_rect.y += self.direction.y * self.speed * dt
-        # print(f"PLAYER self.rect.y: {self.rect.y}, self.collision_rect.y: {self.collision_rect.y}")
         self.collison_check("vertical")
         
 

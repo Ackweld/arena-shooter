@@ -21,16 +21,15 @@ class CameraGroup(pygame.sprite.Group):
 
         self.center_target_camera(player)
 
-        enemy_path = enemy.get_path()
-
-        points = []
-        for point in enemy_path:
-            points.append((vector(point) * TILE_SIZE + vector(32, 32) - self.offset))
 
         for sprite in self.sprites():
             offset_pos = sprite.rect.topleft - self.offset  # Apply camera offset
             self.display_surface.blit(sprite.image, offset_pos)
 
+        enemy_path = enemy.get_path()
+
+        points = []
+        for point in enemy_path:
+            points.append((vector(point) * TILE_SIZE + vector(32, 32) - self.offset))
         if len(points) > 1:
-            print(f"Points: {points}")
             pygame.draw.lines(self.display_surface, (124, 252, 0), False, points, 5)
