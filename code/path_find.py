@@ -30,9 +30,9 @@ class PathFind():
     def a_star(self, start, goal):
         # A* algorithm
         grid = Grid(matrix=self.matrix)
-
-        start = grid.node(int(start.x), int(start.y))
-        end = grid.node(int(goal.x), int(goal.y))
+        
+        start = grid.node(int(start[0]), int(start[1]))
+        end = grid.node(int(goal[0]), int(goal[1]))
 
         finder = AStarFinder(diagonal_movement=DiagonalMovement.always)
 

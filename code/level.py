@@ -54,5 +54,4 @@ class Level:
     def run(self, dt):
         self.camera_group.update(dt)
         self.display_surface.fill("black")
-        # self.camera_group.custom_draw(self.player)
-        self.camera_group.custom_draw(self.player, self.enemy, self.path_find)
+        self.camera_group.custom_draw(self.player, self.enemy)
