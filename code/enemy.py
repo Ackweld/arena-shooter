@@ -4,7 +4,7 @@ import heapq
 
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, pos, groups, collision_sprites, player):
+    def __init__(self, pos, groups, collision_sprites, player, path_find):
         super().__init__(groups)
 
         self.original_image = pygame.image.load(
@@ -32,13 +32,15 @@ class Enemy(pygame.sprite.Sprite):
 
         # Objects that the player should collide with
         self.collision_sprites = collision_sprites
-        
-        self.target = player.rect.center
+
+        self.target = player.collision_rect
+        self.path_find = path_find
+        self.path = []
 
     def move(self, dt):
         self.collision_rect.x += self.direction.x * self.speed * dt
         self.collison_check("horizontal")
-        
+
         self.collision_rect.y += self.direction.y * self.speed * dt
         self.collison_check("vertical")
 
@@ -78,7 +80,20 @@ class Enemy(pygame.sprite.Sprite):
                     ):
                         self.collision_rect.bottom = sprite.rect.top
 
+    def follow_path(self):
+        return self.path
+
     def update(self, dt):
+        print(f"TARGET: {self.target.centerx, self.target.centery}")
+        # self.path = self.path_find.a_star(vector(self.collision_rect.x, self.collision_rect.y), vector(9, 1))
+        # print(f"X: {self.collision_rect.centerx}, Y: {self.collision_rect.centery}")
+        self.path = self.path_find.a_star(
+            vector(
+                self.collision_rect.centerx // TILE_SIZE,
+                self.collision_rect.centery // TILE_SIZE,
+            ),
+            vector(self.target[0] // TILE_SIZE, self.target[1] // TILE_SIZE),
+        )
         self.old_rect = self.collision_rect.copy()
         self.move(dt)
         self.face_direction()
