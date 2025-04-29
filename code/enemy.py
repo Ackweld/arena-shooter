@@ -91,9 +91,9 @@ class Enemy(pygame.sprite.Sprite):
             target_pos = vector(target_x, target_y)
             current_pos = vector(self.collision_rect.center)
 
-            print(f"Target pos: {target_pos}")
-            print(f"Current pos: {current_pos}")
-            print(f"Distance: {target_pos.distance_to(current_pos)}")
+            # print(f"Target pos: {target_pos}")
+            # print(f"Current pos: {current_pos}")
+            # print(f"Distance: {target_pos.distance_to(current_pos)}")
 
             # If the enemy is close enough to the target, move to the next point
             if target_pos.distance_to(current_pos) < 5:
@@ -101,17 +101,25 @@ class Enemy(pygame.sprite.Sprite):
                 if not self.path:
                     self.direction = vector(0, 0)  # Stop moving if no path left
                     return self.path
-                
+
             # Calculate direction if path still exists
             direction_vector = target_pos - current_pos
-            
+
             if direction_vector.length() > 0:  # Ensure it's not a zero vector
                 self.direction = direction_vector.normalize()
             else:
                 self.direction = vector(0, 0)  # Stop moving if there's no direction
-                
+
+    # Returns the A* path
     def get_path(self):
         return self.path
+
+    def get_enemy_to_player_vector(self):
+        # return [[self.collision_rect.x, self.collision_rect.y], [self.target.x, self.target.y]]
+        return {
+            "enemy": (self.collision_rect.x, self.collision_rect.y),
+            "player": (self.target.x, self.target.y),
+        }
 
     def update(self, dt):
         if not self.path:
